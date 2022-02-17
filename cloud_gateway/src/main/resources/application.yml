@@ -1,0 +1,12 @@
+server:
+  port: 8092
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: home_api
+          uri: http://localhost:8093
+          predicates:
+            - Path=/api/**
+          filters:
+            - StripPrefix=1
