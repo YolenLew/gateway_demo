@@ -31,6 +31,28 @@ public class PortalControllerTest {
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    private JavaType constructJavaType(ParameterizedType genericTypePtz) {
+        Type rawType = genericTypePtz.getRawType();
+        Type actualTypeArgument = genericTypePtz.getActualTypeArguments()[0];
+        if (actualTypeArgument instanceof ParameterizedType) {
+            JavaType javaType = constructJavaType((ParameterizedType) actualTypeArgument);
+            return MAPPER.getTypeFactory().constructParametricType((Class<?>) rawType, javaType);
+        }
+        return MAPPER.getTypeFactory().constructParametricType((Class<?>) rawType, (Class<?>)actualTypeArgument);
+
+    }
+
+    @Test
+    public void testRecursiveType() throws NoSuchFieldException, JsonProcessingException {
+        Class<PortalController> clazz = PortalController.class;
+        Field property = clazz.getDeclaredField("property");
+        ParameterizedType genericTypePtz = (ParameterizedType)property.getGenericType();
+        JavaType javaType = constructJavaType(genericTypePtz);
+        String json = "{\"code\":200,\"message\":\"操作成功\",\"data\":[{\"name\":\"Tom\",\"gender\":null,\"age\":10},{\"name\":\"Tom\",\"gender\":null,\"age\":10}]}";
+        Object readValue = MAPPER.readValue(json, javaType);
+        System.out.println(readValue);
+    }
+
     @Test
     public void testDoubleDeserializeImplicitParamType() throws NoSuchFieldException {
         String json = "{\"code\":200,\"message\":\"操作成功\",\"data\":[{\"name\":\"Tom\",\"gender\":null,\"age\":10},{\"name\":\"Tom\",\"gender\":null,\"age\":10}]}";
@@ -45,6 +67,7 @@ public class PortalControllerTest {
                 ParameterizedType firstParamType = (ParameterizedType) firstTypeArgument;
                 Type firstTypeInnerRawType = firstParamType.getRawType();
                 Type firstTypeInnerArgs = firstParamType.getActualTypeArguments()[0];
+
             }
         }
     }
