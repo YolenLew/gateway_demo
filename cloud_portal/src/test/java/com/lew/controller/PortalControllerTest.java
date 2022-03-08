@@ -1,5 +1,6 @@
 package com.lew.controller;
 
+import cn.hutool.core.lang.Singleton;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -7,12 +8,14 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lew.entity.CommonResult;
 import com.lew.entity.User;
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.ws.Response;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -27,8 +30,36 @@ public class PortalControllerTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    private String portalURL = "http://127.0.0.1:8093/portal";
+
+    private static User user;
+
     static {
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        user = new User();
+        user.setName("Tom");
+        user.setAge(18);
+        user.setGender("female");
+    }
+
+    @Test
+    public void testSingleton() {
+        Object single = Singleton.get("single");
+        System.out.println(single);
+    }
+
+    @Test
+    public void testFileDownload() {
+//        restTemplate.exchange("http://localhost:8093/test.doc", HttpMethod.POST,new HttpEntity<>(headers), byte[].class);        System.out.println(responseEntity);
+    }
+
+    @Test
+    public void testRawProperty() throws NoSuchFieldException {
+        Class<PortalController> clazz = PortalController.class;
+        Field property = clazz.getDeclaredField("rawProperty");
+        Type genericType = property.getGenericType();
+        // private CommonResult rawProperty;
+        Assert.assertFalse(genericType instanceof ParameterizedType);
     }
 
     private JavaType constructJavaType(ParameterizedType genericTypePtz) {
