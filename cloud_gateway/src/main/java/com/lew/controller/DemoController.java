@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lew.entity.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,9 @@ public class DemoController {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    @Value("${appName:null}")
+    private String appName;
+
     @Autowired
     public DemoController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -40,7 +44,8 @@ public class DemoController {
     public String hello(@NotBlank(message = "empty name") String name) {
         try { TimeUnit.MILLISECONDS.sleep(300); } catch (InterruptedException e) {e.printStackTrace();}
         log.info("DemoController receive parameter: {}", name);
-        return name;
+        log.info("DemoController appName parameter: {}", appName);
+        return name + appName;
     }
 
     @GetMapping(value = "/postForObject")

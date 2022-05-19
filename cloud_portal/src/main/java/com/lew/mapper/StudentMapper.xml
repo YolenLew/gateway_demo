@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lew.dao.StudentMapper">
+    <!-- 根据id查询 -->
+    <select id="getStuDetailById" resultMap="detailResultMap">
+        SELECT
+        t1.*, t3.id t3_id, t3.name t3_name, t3.created_time t3_created_time, t3.updated_time t3_updated_time
+        FROM t_student t1
+        LEFT JOIN t_student_teacher_relation t2 ON t2.stu_id=t1.id
+        LEFT JOIN t_teacher t3 ON t3.id=t2.tea_id
+         WHERE t1.id = #{id}
+    </select>
+
+    <resultMap id="detailResultMap" type="com.lew.model.Student">
+        <id property="id" column="id"/>
+        <collection property="teachers" ofType="com.lew.model.Teacher">
+            <id property="id" column="t3_id"/>
+            <result property="name" column="t3_name"/>
+            <result property="createdTime" column="t3_created_time"/>
+            <result property="updatedTime" column="t3_updated_time"/>
+        </collection>
+    </resultMap>
+</mapper>

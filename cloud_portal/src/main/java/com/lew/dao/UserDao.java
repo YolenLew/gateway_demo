@@ -14,4 +14,6 @@ import java.util.List;
 public interface UserDao {
     @Select(value = "select * from user")
     List<User> findAll();
+
+    User findByUserId(Long id);
 }

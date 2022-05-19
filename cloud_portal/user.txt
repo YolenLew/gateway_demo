@@ -1,0 +1,19 @@
+{
+            "id": 9,
+            "name": "后台管理员",
+            "wxCard": "wechat666",
+            "type": 3,
+            "title": "",
+            "workYear": "",
+            "projectNumber": 0,
+            "avgScore": 0,
+            "avgScoreByA": null,
+            "dailySalary": 0,
+            "managerRank": 0,
+            "isDeleted": 0,
+            "imageHeadUrl": "http://175.24.60.137:9000/kkb/1620101368747_%E5%B1%B1%E6%9C%89%E6%9C%A8%E5%85%AE.jpg",
+            "createdTime": "2021-05-08T23:49:31.000+00:00",
+            "updatedTime": "2021-05-08T23:53:26.000+00:00",
+            "revision": 0,
+            "loginId": 11
+        }

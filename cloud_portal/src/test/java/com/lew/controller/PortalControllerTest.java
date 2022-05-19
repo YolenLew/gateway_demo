@@ -10,6 +10,7 @@ import com.lew.entity.CommonResult;
 import com.lew.entity.User;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,28 @@ public class PortalControllerTest {
         user.setName("Tom");
         user.setAge(18);
         user.setGender("female");
+    }
+
+    @Test
+    public void testXmlResp() {
+        String url = "http://ws.webxml.com.cn/WebServices/WeatherWS.asmx/getRegionCountry";
+        ResponseEntity<Object> responseEntity = restTemplate.getForEntity(url, Object.class);
+        System.out.println(responseEntity);
+
+        System.out.println("----------------------------------");
+
+        ResponseEntity<Resource> resourceResponseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), Resource.class);
+        System.out.println(resourceResponseEntity);
+
+        url = "http://httpbin.org/html";
+        System.out.println("----------------------------------");
+        ResponseEntity<Resource> htmlResponseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), Resource.class);
+        System.out.println(htmlResponseEntity);
+        url = "http://127.0.0.1:9999/html";
+        System.out.println("----------------------------------");
+        ResponseEntity<Resource> myHtmlResponseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), Resource.class);
+        System.out.println(myHtmlResponseEntity);
+
     }
 
     @Test
