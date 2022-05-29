@@ -2,6 +2,7 @@ package com.lew.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,13 +15,15 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_student")
+@TableName(value = "t_student", autoResultMap = true)
 public class Student {
     private Long id;
     private String name;
     private Double avgScore;
     private Date createdTime;
     private Date updatedTime;
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private RoleRange roleRange;
     @TableField(exist = false)
     private List<Teacher> teachers;
 }

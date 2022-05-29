@@ -5,6 +5,7 @@ import com.lew.dao.UserDao;
 import com.lew.entity.CommonResult;
 import com.lew.model.Student;
 import com.lew.model.User;
+import com.lew.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,9 @@ public class UserController {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private StudentService studentService;
+
     @GetMapping(value = "/findAll")
     public CommonResult<List<User>> findAll() {
         List<User> userList = userDao.findAll();
@@ -47,5 +51,17 @@ public class UserController {
     public CommonResult<Student> getStuDetailById(@PathVariable(value = "id")Long id) {
         Student student = studentMapper.getStuDetailById(id);
         return CommonResult.success(student);
+    }
+
+    @GetMapping(value = "/getStuById/{id}/")
+    public CommonResult<Student> getStuById(@PathVariable(value = "id")Long id) {
+        Student student = studentMapper.selectById(id);
+        return CommonResult.success(student);
+    }
+
+    @GetMapping(value = "/getAllStu/")
+    public CommonResult<List<Student>> getAllStu() {
+        List<Student> studenstudentList = studentService.list();
+        return CommonResult.success(studenstudentList);
     }
 }
