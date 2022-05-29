@@ -1,0 +1,17 @@
+.idea
+*.iml
+target/
+.idea/
+*.ipr
+*.iws
+.mymetadata
+.checkstyle
+.classpath
+.project
+.class
+.war
+.zip
+.rar
+**/target/
+*.class
+*.log
