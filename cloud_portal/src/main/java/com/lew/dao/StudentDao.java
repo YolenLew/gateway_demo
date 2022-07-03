@@ -7,10 +7,10 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentMapper extends BaseMapper<Student> {
+public interface StudentDao extends BaseMapper<Student> {
     Student getStuDetailById(Long id);
 
     @ResultMap("mybatis-plus_Student")
-    @Select("SELECT * FROM t_student WHERE id=#{id}")
+//    @Select("SELECT * FROM t_student WHERE id=#{id}")
     Student selectOneById(Long id);
 }

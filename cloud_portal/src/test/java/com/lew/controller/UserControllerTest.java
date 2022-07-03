@@ -1,7 +1,7 @@
 package com.lew.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.lew.dao.StudentMapper;
+import com.lew.dao.StudentDao;
 import com.lew.model.Student;
 import com.lew.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Yolen
@@ -27,7 +25,7 @@ public class UserControllerTest {
     private StudentService studentService;
 
     @Autowired
-    private StudentMapper studentMapper;
+    private StudentDao studentMapper;
 
     @Test
     public void testInsertStudent() {

@@ -8,5 +8,9 @@ import com.lew.model.Student;
  * @date 2022/5/21
  */
 public interface StudentService extends IService<Student> {
+    Student getStuDetailById(Long id);
 
+    Student selectOneById(Long id);
+
+    Student getStuById(Long id);
 }

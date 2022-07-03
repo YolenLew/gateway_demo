@@ -2,14 +2,14 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lew.dao.StudentMapper">
+<mapper namespace="com.lew.dao.StudentDao">
     <sql id="Base_Column_List">
-        t_stu.id,
-        t_stu.name,
-        t_stu.avg_score,
-        t_stu.created_time,
-        t_stu.updated_time,
-        t_stu.role_range
+        t_stu.id t_stu_id,
+        t_stu.name t_stu_name,
+        t_stu.avg_score t_stu_avg_score,
+        t_stu.created_time t_stu_created_time,
+        t_stu.updated_time t_stu_updated_time,
+        t_stu.role_range t_stu_role_range
     </sql>
     <sql id="Teacher_Column_List">
         t_tea.id t_tea_id,
@@ -30,12 +30,12 @@
     </select>
 
     <resultMap id="detailResultMap" type="com.lew.model.Student">
-        <id property="id" column="id"/>
-        <result property="name" column="t_stu.name"/>
-        <result property="avgScore" column="t_stu.avg_score"/>
-        <result property="createdTime" column="t_stu.created_time"/>
-        <result property="updatedTime" column="t_stu.updated_time"/>
-        <result property="roleRange" column="t_stu.role_range"
+        <id property="id" column="t_stu_id"/>
+        <result property="name" column="t_stu_name"/>
+        <result property="avgScore" column="t_stu_avg_score"/>
+        <result property="createdTime" column="t_stu_created_time"/>
+        <result property="updatedTime" column="t_stu_updated_time"/>
+        <result property="roleRange" column="t_stu_role_range"
                 typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
         <collection property="teachers" ofType="com.lew.model.Teacher">
             <id property="id" column="t_tea_id"/>
@@ -44,4 +44,8 @@
             <result property="updatedTime" column="t_tea_updated_time"/>
         </collection>
     </resultMap>
+
+    <select id="selectOneById" resultMap="detailResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_student t_stu WHERE t_stu.id=#{id}
+    </select>
 </mapper>
