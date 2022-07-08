@@ -22,6 +22,7 @@ public class Student {
     private Double avgScore;
     private Date createdTime;
     private Date updatedTime;
+    private Integer roleType;
     @TableField(typeHandler = JacksonTypeHandler.class)
     private RoleRange roleRange;
     @TableField(exist = false)

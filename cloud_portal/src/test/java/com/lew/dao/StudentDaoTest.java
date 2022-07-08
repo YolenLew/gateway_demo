@@ -80,6 +80,34 @@ public class StudentDaoTest {
 
     }
 
+    @Test
+    public void testBatchInsertStudentWithRoleType() {
+        int maxInsertNum = 5;
+        student.setName(generateUUID());
+        student.setRoleType(1);
+        int processors = Runtime.getRuntime().availableProcessors();
+        log.info("processors: {}", processors);
+        ExecutorService executor = Executors.newFixedThreadPool(processors);
+
+        Supplier<Integer> insertStuFuntion = () -> {
+            student.setId(ThreadLocalRandom.current().nextLong(1, Long.MAX_VALUE));
+            student.setAvgScore(ThreadLocalRandom.current().nextDouble());
+            int insertResult = studentDao.checkAndCreateStu(student, maxInsertNum);
+            log.info("{} insertResult: {}", Thread.currentThread().getName(), insertResult);
+            return insertResult;
+        };
+
+        int threadNum = 100;
+        final LinkedList<Integer> resultList = Stream.generate(() -> CompletableFuture.supplyAsync(insertStuFuntion, executor)).limit(threadNum).map(CompletableFuture::join).collect(Collectors.toCollection(LinkedList::new));
+
+        Assert.assertEquals(1, resultList.get(0).intValue());
+
+        for (int i = 1; i < threadNum; i++) {
+            Assert.assertEquals(0, resultList.get(i).intValue());
+        }
+
+    }
+
     public String generateUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
