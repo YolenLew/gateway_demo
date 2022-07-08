@@ -1,4 +1,4 @@
-package com.lew.entity;
+package com.lew.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

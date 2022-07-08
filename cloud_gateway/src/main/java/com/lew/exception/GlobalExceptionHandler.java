@@ -1,6 +1,6 @@
 package com.lew.exception;
 
-import com.lew.entity.CommonResult;
+import com.lew.common.entity.CommonResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

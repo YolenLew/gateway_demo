@@ -1,4 +1,4 @@
-package com.lew.entity;
+package com.lew.common.entity;
 
 /**
  * @Description: 封装API的错误码

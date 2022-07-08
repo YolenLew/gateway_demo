@@ -2,21 +2,19 @@ package com.lew.controller;
 
 import com.lew.dao.StudentDao;
 import com.lew.dao.UserDao;
-import com.lew.entity.CommonResult;
+import com.lew.common.entity.CommonResult;
 import com.lew.model.Student;
 import com.lew.model.User;
 import com.lew.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Yolen
@@ -68,5 +66,12 @@ public class UserController {
     public CommonResult<List<Student>> getAllStu() {
         List<Student> studenstudentList = studentService.list();
         return CommonResult.success(studenstudentList);
+    }
+
+    @PostMapping(value = "/createStu/")
+    public CommonResult<Integer> createStu(@RequestBody Student student) {
+        student.setId(ThreadLocalRandom.current().nextLong(1, Long.MAX_VALUE));
+        int result = studentService.createStu(student);
+        return CommonResult.success(result);
     }
 }

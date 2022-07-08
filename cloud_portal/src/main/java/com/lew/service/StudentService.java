@@ -13,4 +13,6 @@ public interface StudentService extends IService<Student> {
     Student selectOneById(Long id);
 
     Student getStuById(Long id);
+
+    int createStu(Student student);
 }

@@ -1,4 +1,4 @@
-package com.lew.entity;
+package com.lew.common.entity;
 
 /**
  * @Description: 枚举了一些常用API操作码

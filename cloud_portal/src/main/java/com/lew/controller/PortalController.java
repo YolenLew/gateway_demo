@@ -1,7 +1,7 @@
 package com.lew.controller;
 
-import com.lew.entity.CommonResult;
-import com.lew.entity.User;
+import com.lew.common.entity.CommonResult;
+import com.lew.common.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.servicecomb.foundation.common.part.FilePart;
 import org.springframework.core.io.FileSystemResource;
@@ -9,7 +9,6 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

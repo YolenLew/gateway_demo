@@ -32,4 +32,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
     public Student getStuById(Long id) {
         return studentDao.selectOneById(id);
     }
+
+    @Override
+    public int createStu(Student student) {
+        return studentDao.checkAndCreateStu(student, 5);
+    }
 }

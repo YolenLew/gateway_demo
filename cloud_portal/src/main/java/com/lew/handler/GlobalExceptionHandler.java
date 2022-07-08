@@ -1,6 +1,6 @@
 package com.lew.handler;
 
-import com.lew.entity.CommonResult;
+import com.lew.common.entity.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**

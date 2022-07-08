@@ -17,6 +17,11 @@
         t_tea.created_time t_tea_created_time,
         t_tea.updated_time t_tea_updated_time
     </sql>
+    <insert id="checkAndCreateStu">
+        INSERT INTO t_student (`id`,`name`, `avg_score`)
+        SELECT #{student.id}, #{student.name}, #{student.avgScore}
+        WHERE (SELECT count(id) from t_student where name = #{student.name}) &lt; #{maxStuInsertNum}
+    </insert>
 
     <!-- 根据id查询 -->
     <select id="getStuDetailById" resultMap="detailResultMap">
