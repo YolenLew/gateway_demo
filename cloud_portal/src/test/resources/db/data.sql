@@ -1,0 +1,3 @@
+INSERT INTO `t_student`(`id`, `name`, `avg_score`, `created_time`, `updated_time`, `role_type`, `role_range`) VALUES (1, 'zhangsan-update', 8.8, '2022-05-18 18:04:34', '2022-05-22 09:52:42', NULL, '{\"role\":\"monitor\",\"skills\":[\"soccer\",\"basketball\"]}');
+INSERT INTO `t_student`(`id`, `name`, `avg_score`, `created_time`, `updated_time`, `role_type`, `role_range`) VALUES (2, 'lisi', 6.6, '2022-05-18 18:04:48', '2022-05-21 15:20:05', NULL, '{\"role\":\"character\",\"skills\":[\"*\"]}');
+INSERT INTO `t_student`(`id`, `name`, `avg_score`, `created_time`, `updated_time`, `role_type`, `role_range`) VALUES (3, 'wangwu', 7.7, '2022-05-18 18:04:57', '2022-05-18 18:04:57', NULL, NULL);

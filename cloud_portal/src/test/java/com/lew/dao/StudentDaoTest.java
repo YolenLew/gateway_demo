@@ -1,5 +1,6 @@
 package com.lew.dao;
 
+import com.lew.model.enums.RoleType;
 import com.lew.model.Student;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -38,6 +39,7 @@ public class StudentDaoTest {
         student = new Student();
         student.setName("test_name");
         student.setAvgScore(1.0);
+        student.setRoleType(RoleType.CHARACTER);
     }
 
     @Test
@@ -84,7 +86,7 @@ public class StudentDaoTest {
     public void testBatchInsertStudentWithRoleType() {
         int maxInsertNum = 5;
         student.setName(generateUUID());
-        student.setRoleType(1);
+        student.setRoleType(RoleType.MONITOR);
         int processors = Runtime.getRuntime().availableProcessors();
         log.info("processors: {}", processors);
         ExecutorService executor = Executors.newFixedThreadPool(processors);

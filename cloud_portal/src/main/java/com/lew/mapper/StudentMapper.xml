@@ -19,12 +19,12 @@
     </sql>
     <insert id="checkAndCreateStu">
         INSERT INTO t_student (`id`,`name`, `avg_score`, `role_type`)
-        SELECT #{student.id}, #{student.name}, #{student.avgScore}, #{student.roleType}
+        SELECT #{student.id}, #{student.name}, #{student.avgScore}, #{student.roleType.value}
         <where>
             <choose>
-                <when test="student.roleType == 1">
+                <when test="student.roleType.value == 0">
                     (SELECT count(id) from t_student where name = #{student.name}) &lt; #{maxStuInsertNum} and
-                    NOT EXISTS (SELECT `id` from t_student where role_type = #{student.roleType})
+                    NOT EXISTS (SELECT `id` from t_student where role_type = #{student.roleType.value})
                 </when>
                 <otherwise>
                     (SELECT count(id) from t_student where name = #{student.name}) &lt; #{maxStuInsertNum}

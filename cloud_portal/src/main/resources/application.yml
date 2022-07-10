@@ -31,3 +31,4 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:com/lew/mapper/**/*Mapper.xml   #配置mapper.xml的路径
   type-aliases-package: com.lew.model
+#  type-enums-package: com.lew.model.enums
