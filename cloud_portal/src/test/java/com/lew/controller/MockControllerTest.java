@@ -1,7 +1,5 @@
 package com.lew.controller;
 
-
-import com.lew.bean.MockBeanProvider;
 import com.lew.dao.StudentDao;
 import com.lew.model.Student;
 import com.lew.service.StudentService;
@@ -13,8 +11,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.junit4.SpringRunner;
 
 

@@ -22,7 +22,7 @@
         SELECT #{student.id}, #{student.name}, #{student.avgScore}, #{student.roleType.value}
         <where>
             <choose>
-                <when test="student.roleType.value == 0">
+                <when test="student.roleType != null and student.roleType.value == 0">
                     (SELECT count(id) from t_student where name = #{student.name}) &lt; #{maxStuInsertNum} and
                     NOT EXISTS (SELECT `id` from t_student where role_type = #{student.roleType.value})
                 </when>
