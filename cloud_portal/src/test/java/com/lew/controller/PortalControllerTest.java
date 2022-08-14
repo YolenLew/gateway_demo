@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lew.common.entity.CommonResult;
 import com.lew.common.entity.User;
+import com.lew.pay.constant.PayType;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
@@ -20,11 +22,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Locale;
+
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * @author Yolen
  * @date 2022/2/18
  */
+@Slf4j
 public class PortalControllerTest {
 
     private RestTemplate restTemplate = new RestTemplate();
@@ -44,36 +50,35 @@ public class PortalControllerTest {
     }
 
     @Test
+    public void stringFormat() {
+        PayType payType = null;
+        String format = String.format(Locale.ROOT, "pay type [%s] is not supported", payType);
+        log.info("format result of null: {}", format);
+        format = String.format(Locale.ROOT, "pay type [%s] is not supported", PayType.AliPay);
+        log.info("format result of nonnull: {}", format);
+        Assert.assertTrue(format.contains(PayType.AliPay.name()));
+    }
+
+    @Test
     public void testXmlResp() {
         String url = "http://ws.webxml.com.cn/WebServices/WeatherWS.asmx/getRegionCountry";
         ResponseEntity<Object> responseEntity = restTemplate.getForEntity(url, Object.class);
         System.out.println(responseEntity);
-
-        System.out.println("----------------------------------");
-
         ResponseEntity<Resource> resourceResponseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), Resource.class);
-        System.out.println(resourceResponseEntity);
+        log.info("resourceResponseEntity: {}", resourceResponseEntity);
+        Assert.assertEquals(OK, resourceResponseEntity.getStatusCode());
 
         url = "http://httpbin.org/html";
         System.out.println("----------------------------------");
         ResponseEntity<Resource> htmlResponseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), Resource.class);
-        System.out.println(htmlResponseEntity);
-        url = "http://127.0.0.1:9999/html";
-        System.out.println("----------------------------------");
-        ResponseEntity<Resource> myHtmlResponseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), Resource.class);
-        System.out.println(myHtmlResponseEntity);
-
+        log.info("resourceResponseEntity: {}", htmlResponseEntity);
+        Assert.assertEquals(OK, htmlResponseEntity.getStatusCode());
     }
 
     @Test
     public void testSingleton() {
         Object single = Singleton.get("single");
         System.out.println(single);
-    }
-
-    @Test
-    public void testFileDownload() {
-//        restTemplate.exchange("http://localhost:8093/test.doc", HttpMethod.POST,new HttpEntity<>(headers), byte[].class);        System.out.println(responseEntity);
     }
 
     @Test
@@ -102,14 +107,14 @@ public class PortalControllerTest {
         Field property = clazz.getDeclaredField("property");
         ParameterizedType genericTypePtz = (ParameterizedType)property.getGenericType();
         JavaType javaType = constructJavaType(genericTypePtz);
-        String json = "{\"code\":200,\"message\":\"操作成功\",\"data\":[{\"name\":\"Tom\",\"gender\":null,\"age\":10},{\"name\":\"Tom\",\"gender\":null,\"age\":10}]}";
+        String json = "{\"code\":200,\"pay\":\"操作成功\",\"data\":[{\"name\":\"Tom\",\"gender\":null,\"age\":10},{\"name\":\"Tom\",\"gender\":null,\"age\":10}]}";
         Object readValue = MAPPER.readValue(json, javaType);
         System.out.println(readValue);
     }
 
     @Test
     public void testDoubleDeserializeImplicitParamType() throws NoSuchFieldException {
-        String json = "{\"code\":200,\"message\":\"操作成功\",\"data\":[{\"name\":\"Tom\",\"gender\":null,\"age\":10},{\"name\":\"Tom\",\"gender\":null,\"age\":10}]}";
+        String json = "{\"code\":200,\"pay\":\"操作成功\",\"data\":[{\"name\":\"Tom\",\"gender\":null,\"age\":10},{\"name\":\"Tom\",\"gender\":null,\"age\":10}]}";
         // 获取类字节类型
         Class<PortalController> clazz = PortalController.class;
         Field property = clazz.getDeclaredField("property");
@@ -128,7 +133,7 @@ public class PortalControllerTest {
 
     @Test
     public void testSingleDeserializeImplicitParamType() throws NoSuchFieldException, JsonProcessingException {
-        String json = "{\"code\":200,\"message\":\"操作成功\",\"data\":{\"name\":\"Tom\",\"gender\":null,\"age\":10}}";
+        String json = "{\"code\":200,\"pay\":\"操作成功\",\"data\":{\"name\":\"Tom\",\"gender\":null,\"age\":10}}";
         // 获取类字节类型
         Class<PortalController> clazz = PortalController.class;
         Field property = clazz.getDeclaredField("singleNested");
@@ -149,11 +154,11 @@ public class PortalControllerTest {
         TypeReference<CommonResult<List<User>>> typeReference = new TypeReference<CommonResult<List<User>>>() {
         };
         String json = MAPPER.writeValueAsString(result);
-        // {"code":200,"message":"操作成功","data":[{"name":"Tom","gender":null,"age":10},{"name":"Tom","gender":null,"age":10}]}
+        // {"code":200,"pay":"操作成功","data":[{"name":"Tom","gender":null,"age":10},{"name":"Tom","gender":null,"age":10}]}
         System.out.println(json);
         result = restTemplate.getForObject("http://localhost:8093/portal/singleNested", Object.class);
         json = MAPPER.writeValueAsString(result);
-        // {"code":200,"message":"操作成功","data":{"name":"Tom","gender":null,"age":10}}
+        // {"code":200,"pay":"操作成功","data":{"name":"Tom","gender":null,"age":10}}
         System.out.println(json);
     }
 
