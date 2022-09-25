@@ -5,17 +5,24 @@
 package com.lew.common.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author Yolen
+ * @date 2022/9/24
+ */
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class User {
+@AllArgsConstructor
+public class MetaData {
+    private String id;
 
-    private String name;
-    private String gender;
+    private String clusterName;
 
-    private Integer age;
+    private String memory;
 
+    private String cpu;
 }
