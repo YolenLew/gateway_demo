@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2022/2/9
  */
 @SpringBootApplication
-@MapperScan(basePackages="com.lew.dao")
+@MapperScan(basePackages="com.lew.gateway")
 public class CloudPortalApplication {
     public static void main(String[] args) {
         SpringApplication.run(CloudPortalApplication.class, args);
