@@ -14,6 +14,7 @@
         <module>cloud_gateway</module>
         <module>cloud_portal</module>
         <module>cloud_common</module>
+        <module>mbp_generator</module>
     </modules>
 
     <parent>
