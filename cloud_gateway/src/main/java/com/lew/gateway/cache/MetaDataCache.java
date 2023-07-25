@@ -72,7 +72,7 @@ public class MetaDataCache implements ApplicationListener<ContextRefreshedEvent>
 
     private static void refresh() {
         // 同步刷新测试
-//        syncRefresh();
+        // syncRefresh();
 
         // 异步刷新测试
         asyncRefresh();
@@ -109,9 +109,8 @@ public class MetaDataCache implements ApplicationListener<ContextRefreshedEvent>
             // 查询集群数据
             List<String> allClusterData = SOME_MANAGER.getAllClusterData(clusterName);
             // 异步执行
-            List<MetaData> metaDataList = ExecuteUtil
-                    .partitionCall2ListAsync(allClusterData, 10, COMMON_POOL, eachList -> getMetaBatch(eachList,
-                            clusterName));
+            List<MetaData> metaDataList = ExecuteUtil.partitionCall2ListAsync(allClusterData, 10, COMMON_POOL,
+                eachList -> getMetaBatch(eachList, clusterName));
             metaDataList.forEach(metaData -> {
                 ClusterData clusterDataCache = METACACHE_MAP.get(metaData.getClusterName());
                 if (!METACACHE_MAP.containsKey(metaData.getClusterName())) {
