@@ -93,6 +93,16 @@
                     <include>**/*.xml</include>
                 </includes>
             </resource>
+            <!-- SpringBoot编译target目录下没有resource下的文件（踩坑）https://blog.csdn.net/weixin_43409994/article/details/118157694 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.yml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
         </resources>
     </build>
 </project>

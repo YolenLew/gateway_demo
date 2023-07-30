@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2023. This is my custom copyright information.2023-2023. All rights reserved.
+  -->
+
+<Configuration>
+    <Properties>
+        <Property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %-40.40c{1.} : %m%n"/>
+
+        <!-- 日志输出级别 -->
+        <Property name="LOG_INFO_LEVEL" value="info"/>
+        <!-- error级别日志 -->
+        <Property name="LOG_ERROR_LEVEL" value="error"/>
+        <!-- 在当前目录下创建名为log目录做日志存放的目录 -->
+        <Property name="LOG_HOME" value="./log"/>
+        <!-- 档案日志存放目录 -->
+        <Property name="LOG_ARCHIVE" value="./log/archive"/>
+        <!-- 模块名称， 影响日志配置名，日志文件名，根据自己项目进行配置 -->
+        <Property name="LOG_MODULE_NAME" value="spring-boot"/>
+        <!-- 日志文件大小，超过这个大小将被压缩 -->
+        <Property name="LOG_MAX_SIZE" value="100 MB"/>
+        <!-- 保留多少天以内的日志 -->
+        <Property name="LOG_DAYS" value="15"/>
+        <!--输出日志的格式：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度， %msg：日志消息，%n是换行符 -->
+        <Property name="LOG_PATTERN" value="%d [%t] %-5level %logger{0} - %msg%n"/>
+        <!--interval属性用来指定多久滚动一次-->
+        <Property name="TIME_BASED_INTERVAL" value="1"/>
+
+    </Properties>
+    <Appenders>
+        <!-- 输出到控制台，仅在本地开发环境使用 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${PATTERN}"/>
+            <!--控制台只输出level及其以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="${LOG_INFO_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+        <!--输出到日志文件，滚动分割日志文件，自动打包gz-->
+        <RollingFile name="File" fileName="logs/app-portal.log"
+                     filePattern="logs/archives/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <!--默认一天一个文件-->
+                <TimeBasedTriggeringPolicy />
+                <!--一天内大于size就单独分隔-->
+                <SizeBasedTriggeringPolicy size="200M"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- 添加你的自定义logger，一般用于区分包名的日志，不同包名不同的级别/appender -->
+        <!-- additivity 意思是，调用完当前appender，是否继续调用parent logger appender，默认true-->
+        <Logger name="com.lew.gateway.filter.AccessLogFilter" level="debug" additivity="false">
+            <AppenderRef ref="File"/>
+        </Logger>
+        <!--默认的Root Logger 级别-->
+        <Root level="INFO">
+            <!--这里需要区分下环境（配合maven profile之类的）-->
+            <!-- 开发环境使用Console Appender，生产环境使用File Appender -->
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -30,5 +30,9 @@ mybatis-plus:
     auto-mapping-behavior: full
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:com/lew/**/*Mapper.xml   #配置mapper.xml的路径
-  type-aliases-package: com.lew.model
+  type-aliases-package: com.lew.gateway.model
 #  type-enums-package: com.lew.model.enums
+logging:
+  level:
+    root: info
+    com.lew.gateway: debug

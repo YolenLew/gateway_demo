@@ -65,6 +65,8 @@
     </resultMap>
 
     <select id="selectOneById" resultMap="detailResultMap">
-        SELECT <include refid="Base_Column_List"/> FROM t_student t_stu WHERE t_stu.id=#{id}
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_student t_stu WHERE t_stu.id=#{id}
     </select>
 </mapper>
