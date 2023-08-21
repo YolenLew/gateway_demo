@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lew.gateway.model.Person;
+import com.lew.gateway.pay.constant.PayType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -19,6 +20,8 @@ import org.junit.Test;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +45,24 @@ public class JsonTest {
     }
 
     @Test
+    public void testComparator() {
+        // 是否要交换: 1是正的，表示true，就交换。
+        List<PayType> payList = Arrays.asList(PayType.AliPay, PayType.WechatPay);
+        payList.sort(Comparator.comparing(PayType::getCode));
+        assertEquals(PayType.AliPay, payList.get(0));
+
+        payList.sort(Comparator.comparing(PayType::getCode).reversed());
+        assertEquals(PayType.WechatPay, payList.get(0));
+    }
+
+    @Test
     public void printMap() throws JsonProcessingException {
         String json = "{\"black\":3,\"green\":6,\"red\":10}";
         Map<String, Integer> map = MAPPER.readValue(json, new TypeReference<Map<String, Integer>>() {
         });
         // 3 black balls, 6 green balls, 10 red balls
-        String joinResult = map.entrySet().stream().map(entry -> entry.getValue() + " " + entry.getKey() + " balls").collect(Collectors.joining(", "));
+        String joinResult = map.entrySet().stream().map(entry -> entry.getValue() + " " + entry.getKey() + " balls")
+            .collect(Collectors.joining(", "));
         log.info("joinResult: {}", joinResult);
         assertTrue(StringUtils.containsAny(joinResult, map.keySet().iterator().next()));
 
@@ -61,10 +76,11 @@ public class JsonTest {
         String msg3 = MessageFormat.format(choiceTemplate, 3, 0);
         log.info("msg3: {}", msg3);
 
-        String wholeChoiceTemplate = "总共有{0}个特殊的球{1, choice, 0#|1#，{1}个黑球}{2, choice, 0#|1#，{2}个绿球}{3, choice, 0#|1#，{3}个红球}";
+        String wholeChoiceTemplate =
+            "总共有{0}个特殊的球{1, choice, 0#|1#，{1}个黑球}{2, choice, 0#|1#，{2}个绿球}{3, choice, 0#|1#，{3}个红球}";
         String msg4 = MessageFormat.format(wholeChoiceTemplate, 3, 0, 0, 3);
         log.info("msg4: {}", msg4);
-        String msg5= MessageFormat.format(wholeChoiceTemplate, 19, 3, 6, 10);
+        String msg5 = MessageFormat.format(wholeChoiceTemplate, 19, 3, 6, 10);
         log.info("msg5: {}", msg5);
     }
 
@@ -79,12 +95,9 @@ public class JsonTest {
 
     @Test
     public void testJsonToMdTable() {
-        String mdTableStr = "| id | name    | age | gender |\n" +
-                "|----|---------|-----|--------|\n" +
-                "| 1  | Roberta | 39  | M      |\n" +
-                "| 2  | Oliver  | 25  | M      |\n" +
-                "| 3  | Shayna  | 18  | F      |\n" +
-                "| 4  | Fechin  | 18  | M      |\n";
+        String mdTableStr = "| id | name    | age | gender |\n" + "|----|---------|-----|--------|\n"
+            + "| 1  | Roberta | 39  | M      |\n" + "| 2  | Oliver  | 25  | M      |\n"
+            + "| 3  | Shayna  | 18  | F      |\n" + "| 4  | Fechin  | 18  | M      |\n";
         System.out.println(mdTableStr);
         System.out.println("a" + System.lineSeparator() + "b");
         assertNotNull(mdTableStr);
