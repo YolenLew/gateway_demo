@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -91,7 +92,7 @@ public class DefaultListUtil {
         }
 
         Objects.requireNonNull(keyExtractor);
-        return list.stream().filter(Objects::nonNull).filter(predicateByKey(keyExtractor)).collect(Collectors.toList());
+        return list.stream().filter(Objects::nonNull).filter(predicateByKeySet(keyExtractor)).collect(Collectors.toList());
     }
 
     /**
@@ -109,6 +110,19 @@ public class DefaultListUtil {
     public static <T, U> Predicate<T> predicateByKey(Function<? super T, U> keyExtractor) {
         Map<U, Boolean> map = new ConcurrentHashMap<>();
         return t -> Objects.isNull(map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE));
+    }
+
+    /**
+     * 根据指定key去重方法
+     *
+     * @param keyExtractor 要比较的字段提取器
+     * @param <T>          要去重的元素类型
+     * @param <U>          要比较的字段类型
+     * @return 对象是否重复的断言函数
+     */
+    public static <T, U> Predicate<T> predicateByKeySet(Function<? super T, U> keyExtractor) {
+        Set<U> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
 }
