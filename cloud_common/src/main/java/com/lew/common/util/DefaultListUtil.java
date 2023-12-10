@@ -92,7 +92,8 @@ public class DefaultListUtil {
         }
 
         Objects.requireNonNull(keyExtractor);
-        return list.stream().filter(Objects::nonNull).filter(predicateByKeySet(keyExtractor)).collect(Collectors.toList());
+        return list.stream().filter(Objects::nonNull).filter(predicateByKeySet(keyExtractor))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -120,9 +121,46 @@ public class DefaultListUtil {
      * @param <U>          要比较的字段类型
      * @return 对象是否重复的断言函数
      */
-    public static <T, U> Predicate<T> predicateByKeySet(Function<? super T, U> keyExtractor) {
+    private static <T, U> Predicate<T> predicateByKeySet(Function<? super T, ? extends U> keyExtractor) {
         Set<U> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
+    }
+
+    /**
+     * 封装定义一个去重方法，配合filter方法可灵活的按字段去重，保持了原列表的顺序.<p>
+     * 不足之处是内部定义了一个HashMap，有一定内存占用，并且多了一个方法定义
+     *
+     * @param list          list
+     * @param keyExtractors 要比较的字段提取器
+     * @param <T>           要去重的元素类型
+     * @return 去重后的字段集合
+     */
+    public static <T> List<T> distinctByFields(List<T> list, Function<? super T, ?>... keyExtractors) {
+        if (CollectionUtils.isEmpty(list)) {
+            return Collections.emptyList();
+        }
+
+        Objects.requireNonNull(keyExtractors);
+        return list.stream().filter(Objects::nonNull).filter(predicateByKeys(keyExtractors))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 根据多个key拼接结果去重方法
+     *
+     * @param keyExtractors 要比较的字段提取器
+     * @param <T>           要去重的元素类型
+     * @return 对象是否重复的断言函数
+     */
+    private static <T> Predicate<T> predicateByKeys(Function<? super T, ?>... keyExtractors) {
+        Set<String> seen = ConcurrentHashMap.newKeySet();
+        return t -> {
+            StringBuilder keyBuilder = new StringBuilder();
+            for (Function<? super T, ?> keyExtractor : keyExtractors) {
+                keyBuilder.append(keyExtractor.apply(t));
+            }
+            return seen.add(keyBuilder.toString());
+        };
     }
 
 }
