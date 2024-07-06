@@ -15,6 +15,7 @@
         <module>cloud_portal</module>
         <module>cloud_common</module>
         <module>mbp_generator</module>
+        <module>mbp_producer</module>
     </modules>
 
     <parent>
