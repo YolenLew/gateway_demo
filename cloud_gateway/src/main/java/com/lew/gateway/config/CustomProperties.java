@@ -33,5 +33,6 @@ public class CustomProperties {
     public static class Credential {
         private String username;
         private String password;
+        private String alias;
     }
 }

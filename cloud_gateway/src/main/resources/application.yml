@@ -30,6 +30,7 @@ custom:
     root:
       username: root
       password: rootpass
+      alias: admin
     guest:
       username: guest
       password: guestpass
