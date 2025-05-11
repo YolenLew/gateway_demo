@@ -36,3 +36,15 @@ logging:
   level:
     root: info
     com.lew.gateway: debug
+
+# http请求配置
+http:
+  client:
+    connect-timeout: 30s
+    response-timeout: 60s
+    proxy:
+      host: 192.168.211.110
+      port: 8090
+      enabled: false
+    ssl:
+      insecure-enabled: true  # 是否跳过SSL证书验证（生产环境应设为false）
