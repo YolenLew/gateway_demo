@@ -48,3 +48,8 @@ http:
       enabled: false
     ssl:
       insecure-enabled: true  # 是否跳过SSL证书验证（生产环境应设为false）
+
+# 配置值下划线丢失
+under-scope:
+  id-quote: "10_10"
+  id-unquote: 10_10
