@@ -12,6 +12,12 @@
     <artifactId>cloud_common</artifactId>
 
     <dependencies>
+        <!-- Source: https://mvnrepository.com/artifact/org.jfree/jfreechart -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.asynchttpclient</groupId>
             <artifactId>async-http-client</artifactId>
