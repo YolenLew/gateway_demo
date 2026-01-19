@@ -15,6 +15,7 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PieLabelLinkStyle;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
@@ -25,6 +26,8 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class GeneratePieChartUtil {
@@ -63,6 +66,16 @@ public class GeneratePieChartUtil {
         chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
         // 标注位于右侧
         chart.getLegend().setPosition(RectangleEdge.RIGHT);
+        // 设置饼图标签生成器，百分比保留两位小数
+        // 自定义百分比格式，保留两位小数
+        DecimalFormat percentFormat = new DecimalFormat("0.00%");
+        StandardPieSectionLabelGenerator labelGenerator =
+            new StandardPieSectionLabelGenerator("{0}: {1}({2})",       // 标签格式：{0}名称，{1}数值，{2}百分比
+                NumberFormat.getNumberInstance(), // 百分比格式
+                percentFormat);
+        // 应用标签生成器
+        piePlot.setLabelGenerator(labelGenerator);
+        piePlot.setLegendLabelGenerator(labelGenerator);
 
         //设置图例背景颜色（饼图）
         if (CollectionUtil.isNotEmpty(legendColorList)) {
